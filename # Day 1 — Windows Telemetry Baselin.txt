@@ -1,0 +1,47 @@
+# Day 1 — Windows Telemetry Baseline
+
+## Objective
+
+Establish and validate Windows Security auditing and Sysmon process-creation telemetry in an isolated Active Directory lab.
+
+## Environment
+
+* Domain: `secutech.local`
+* Domain controller: Windows Server 2022
+* Endpoint: Windows 11 VM
+* Telemetry sources: Windows Security log and Sysmon Operational log
+
+## Work completed
+
+* Verified the `SECUTECH - DC Advanced Audit - Lab` GPO appears in Applied Group Policy Objects.
+* Verified Windows Security Event ID 4688 records process creation.
+* Confirmed the Event ID 4688 command-line field is populated.
+* Verified Sysmon is running on the Windows 11 VM.
+* Confirmed Sysmon Event ID 1 records process creation.
+* Inspected Sysmon process details, including image, parent process, command line, and hashes where available.
+* Saved sample telemetry for future analysis.
+
+## Initial observations
+
+Windows Security Event ID 4688 and Sysmon Event ID 1 both provide process-creation visibility. Sysmon may provide additional process context, depending on configuration. High event counts alone do not establish malicious activity.
+
+## Limitations
+
+* No detection rule has been evaluated yet.
+* No confirmed malicious activity was simulated.
+* Event volume and false-positive behavior still need to be measured.
+* Security events from the domain controller and Sysmon events from Windows 11 are from different machines and were not correlated as the same process.
+
+## Next steps
+
+* Build a benign process-creation test case.
+* Develop a small detection rule and validate it against observed events.
+* Document expected behavior, false positives, and limitations.
+
+## Evidence
+
+* `gpresult.txt`
+* `audit-policy.txt`
+* `event-4688-samples.txt`
+* `sysmon-event-1-samples.txt`
+* `sysmon-service.txt`

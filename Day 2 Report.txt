@@ -1,0 +1,26 @@
+# Day 2 — Sysmon Process Detection
+
+## Objective
+Build and validate a PowerShell query for Sysmon process-creation events.
+
+## Data source
+- Windows 11 lab VM
+- Sysmon Operational log
+- Event ID 1 — Process creation
+
+## Detection logic
+Parse structured event XML and select process-creation events where the `Image` field ends in `notepad.exe`.
+
+## Validation
+- Confirmed a Notepad process path in the query output.
+- Inspected available process metadata.
+- Saved the detection script and matching results to CSV.
+
+## Findings
+The query identified a Notepad process-creation event. Review the timestamp, executable path, command line, parent process, user, and hashes in the saved CSV.
+
+## Limitations
+Notepad execution is benign in this test. This demonstrates telemetry collection and query validation, not detection of a confirmed attack. Additional tests and false-positive analysis are required before treating this as a production detection.
+
+## Next steps
+Test the query against other processes, document its limitations, and build a more meaningful behavioral detection.

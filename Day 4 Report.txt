@@ -1,0 +1,40 @@
+
+@'
+# Day 4 — Windows Process-Chain Investigation
+
+## Objective
+Investigate a Windows process-creation event using Sysmon Event ID 1 and validate the executable's digital signature.
+
+## Evidence examined
+- Event source: Sysmon Operational log
+- Event ID: 1 — Process Create
+- Process: C:\Windows\servicing\TrustedInstaller.exe
+- Parent process: C:\Windows\System32\services.exe
+- Parent Process ID: 856
+- User: NT AUTHORITY\SYSTEM
+- Integrity level: System
+- Signature status: Valid
+- Signer: Microsoft Windows
+- Signature evidence: trustedinstaller-signature.txt
+
+## Initial assessment
+The executable path, parent process, SYSTEM context, and verified Microsoft Windows signature are consistent with expected Windows servicing activity.
+
+## Limitations
+This is a preliminary assessment, not proof that all activity was benign. The investigation did not independently verify the file hash against a trusted baseline or fully correlate surrounding events and Windows Update activity.
+
+## Detection and investigation lessons
+1. Sysmon Event ID 1 provides process and parent-process context.
+2. ParentProcessId identifies a parent PID; ParentProcessGuid helps correlate the parent process instance.
+3. Digital-signature verification provides useful evidence but does not independently establish benign behavior.
+4. Investigators should correlate process paths, command lines, users, hashes, signatures, and surrounding events before reaching a conclusion.
+
+## Conclusion
+The available evidence is consistent with legitimate Windows servicing. No malicious activity was established from this event alone.
+
+## Evidence files
+- trustedinstaller-signature.txt
+- day04-process-chain.csv
+'@ | Set-Content -Path 'C:\Lab\Day04\day04-investigation-report.md' -Encoding UTF8
+
+Test-Path 'C:\Lab\Day04\day04-investigation-report.md'

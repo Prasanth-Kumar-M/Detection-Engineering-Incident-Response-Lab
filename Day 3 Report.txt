@@ -1,0 +1,41 @@
+
+$report = @'
+# Day 3 — Windows Process-Chain Investigation
+
+## Objective
+Investigate Sysmon Event ID 1 process-creation telemetry and document the relationship between a process, its parent process, command line, and user.
+
+## Environment
+- Windows 11 lab VM
+- Sysmon Operational event log
+- Evidence directory: C:\Lab\Day03
+
+## Evidence collected
+- notepad-process-chain.csv
+- powershell-notepad-results.csv
+- process-chain-investigation.ps1
+- sysmon-process-creation-samples.csv
+
+## Observations
+The process-chain CSV contains Notepad-related process records and identifies the account SECUTECH\prasanth.
+
+One record shows PowerShell as the parent image and a command line referencing C:\Windows\System32\notepad.exe. Another record contains a Notepad application path and a PowerShell parent image.
+
+These records demonstrate how process-creation telemetry can help reconstruct process relationships.
+
+## Initial assessment
+The evidence is consistent with investigating a deliberately launched, benign Notepad process. A process name or parent-child relationship alone does not prove malicious activity.
+
+## Limitations
+- The evidence has not established malicious execution.
+- Parent-child relationships should be corroborated with timestamps, process GUIDs, command lines, and surrounding events.
+- No alert performance or false-positive rate has been measured.
+
+## Conclusion
+This lab exercise collected and exported Sysmon process-creation evidence and examined parent-child process relationships. The next step is to validate the investigation query against known benign and unrelated processes.
+'@
+
+$report | Set-Content -Path 'C:\Lab\Day03\day-03-report.md' -Encoding UTF8
+
+Get-Item 'C:\Lab\Day03\day-03-report.md' |
+Select-Object FullName, Length, LastWriteTime
