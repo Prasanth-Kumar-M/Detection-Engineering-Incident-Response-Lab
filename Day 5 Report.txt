@@ -1,0 +1,38 @@
+@'
+# Day 5 — Windows Process Lineage Investigation
+
+## Objective
+Investigate Sysmon Event ID 1 process-creation events using
+process lineage, command-line context, user context, and digital signatures.
+
+## Evidence collected
+- day05-process-lineage.csv
+- day05-signature-validation.txt
+
+## Investigation findings
+- Observed multiple msedgewebview2.exe process-creation events.
+- The observed executable path was under the Microsoft Edge WebView
+  Application directory.
+- The command line included --webview-exe-name=Widgets.exe and
+  referenced a Windows Widgets package data directory.
+- The observed process ran as SECUTECH\prasanth.
+- The executable signature check returned Valid.
+- The signer certificate identified Microsoft Corporation.
+
+## Assessment
+The observed evidence is consistent with legitimate Windows Widgets
+using Microsoft Edge WebView2. This is a preliminary benign assessment,
+not proof that every related process is harmless.
+
+## Limitations
+This investigation examined selected process-creation records.
+It did not establish the complete history of every parent process,
+validate every related executable, or prove the absence of malicious activity.
+
+## Analyst takeaway
+Process names alone are insufficient. Combine executable paths,
+parent-child relationships, command-line arguments, user context,
+and signature validation before making a detection decision.
+'@ | Set-Content -LiteralPath 'C:\Lab\Day05\day05-investigation-report.md' -Encoding utf8
+
+Test-Path 'C:\Lab\Day05\day05-investigation-report.md'
